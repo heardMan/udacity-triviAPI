@@ -12,4 +12,4 @@ TEST = None
 
 # Connect to the database
 SQLALCHEMY_TRACK_MODIFICATIONS = True
-SQLALCHEMY_DATABASE_URI = '{}://{}@{}/{}'.format('postgresql', 'mark', 'localhost:5432', 'test')
+SQLALCHEMY_DATABASE_URI = '{}://{}@{}/{}'.format('postgresql', 'mark', 'localhost:5432', 'trivia')

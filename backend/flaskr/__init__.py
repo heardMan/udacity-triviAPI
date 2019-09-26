@@ -2,16 +2,19 @@ import os
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from flask_migrate import Migrate
 import random
 
-from models import setup_db, Question, Category
+from models import db, Question, Category
 
 QUESTIONS_PER_PAGE = 10
 
 
 # create and configure the app
 app = Flask(__name__)
-setup_db(app)
+app.config.from_object('config')
+db.init_app(app)
+migrate = Migrate(app, db)
  
 '''
 @TODO: Set up CORS. Allow '*' for origins. Delete the sample route after completing the TODOs
