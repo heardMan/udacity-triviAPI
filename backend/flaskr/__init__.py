@@ -34,9 +34,10 @@ def after_request(response):
 Create an endpoint to handle GET requests 
 for all available categories.
 '''
-@app.route('/all', methods=['GET'])
-def get_all():
-  return {"all": "This is everything"}
+@app.route('/categories', methods=['GET'])
+def get_categories():
+  categories = [category.type for category in Category.query.all()]
+  return jsonify({'categories': categories})
 
 '''
 @TODO: 
@@ -51,6 +52,30 @@ ten questions per page and pagination at the bottom of the screen for three page
 Clicking on the page numbers should update the questions. 
 '''
 
+@app.route('/questions/page/<int:page>', methods=['GET'])
+def get_questions(page):
+  print(page)
+  questions = []
+  query = Question.query.all()
+  print(questions)
+  for question in query:
+    print(question)
+    _question_ = {
+      'key': question.id,
+      'question': question.question,
+      'answer': question.answer,
+      'category': question.category,
+      'difficulty': question.difficulty
+    }
+    questions.append(_question_)
+  categories = [category.type for category in Category.query.all()]
+  print(categories)
+  return jsonify({
+          'questions': questions,
+          'total_questions': len(questions),
+          'categories': categories,
+          'current_category': 'result.current_category'
+  })
 '''
 @TODO: 
 Create an endpoint to DELETE question using a question ID. 
@@ -109,6 +134,12 @@ Create error handlers for all expected errors
 including 404 and 422. 
 '''
   
+#----------------------------------------------------------------------------#
+# Launch.
+#----------------------------------------------------------------------------#
 
+# Default port:
+if __name__ == '__main__':
+    app.run()
 
     
