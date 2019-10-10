@@ -150,6 +150,7 @@ COPY public.questions (id, question, answer, difficulty, category) FROM stdin;
 \.
 
 
+
 --
 -- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: caryn
 --
@@ -186,6 +187,58 @@ ALTER TABLE ONLY public.questions
 
 ALTER TABLE ONLY public.questions
     ADD CONSTRAINT category FOREIGN KEY (category) REFERENCES public.categories(id) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+insert into public.questions(id, question, answer, difficulty, category)
+values(1, 'Test One','Answer One',3,2);
+insert into public.questions(id, question, answer, difficulty, category)
+values(2, 'Test two','Answer two',3,2);
+insert into public.questions(id, question, answer, difficulty, category)
+values(3, 'Test three','Answer three',3,2);
+insert into public.questions(id, question, answer, difficulty, category)
+values(4, 'Test four','Answer four',3,2);
+insert into public.questions(id, question, answer, difficulty, category)
+values(5, 'Test five','Answer five',3,2);
+insert into public.questions(id, question, answer, difficulty, category)
+values(6, 'Test six','Answer six',3,2);
+insert into public.questions(id, question, answer, difficulty, category)
+values(7, 'Test seven','Answer seven',3,2);
+insert into public.questions(id, question, answer, difficulty, category)
+values(8, 'Test eight','Answer eight',3,2);
+insert into public.questions(id, question, answer, difficulty, category)
+values(9, 'Test nine','Answer nine',3,2);
+insert into public.questions(id, question, answer, difficulty, category)
+values(10, 'Test ten','Answer ten',3,2);
+insert into public.questions(id, question, answer, difficulty, category)
+values(11, 'Test eleven','Answer eleven',3,2);
+insert into public.questions(id, question, answer, difficulty, category)
+values(12, 'Test twelve','Answer twelve',3,2);
+insert into public.questions(id, question, answer, difficulty, category)
+values(13, 'Test thirteen','Answer thirteen',3,2);
+insert into public.questions(id, question, answer, difficulty, category)
+values(14, 'Test fourteen','Answer fourteen',3,2);
+insert into public.questions(id, question, answer, difficulty, category)
+values(15, 'Test fifteen','Answer fifteen',3,2);
+insert into public.questions(id, question, answer, difficulty, category)
+values(16, 'Test sixteen','Answer sixteen',3,2);
+insert into public.questions(id, question, answer, difficulty, category)
+values(17, 'Test seventeen','Answer seventeen',3,2);
+insert into public.questions(id, question, answer, difficulty, category)
+values(18, 'Test eighteen','Answer eighteen',3,2);
+insert into public.questions(id, question, answer, difficulty, category)
+values(19, 'Test nineteen','Answer nineteen',3,2);
+insert into public.questions(id, question, answer, difficulty, category)
+values(20, 'Test twenty','Answer twenty',3,2);
+insert into public.questions(id, question, answer, difficulty, category)
+values(21, 'Test twenty one','Answer twenty one',3,2);
+insert into public.questions(id, question, answer, difficulty, category)
+values(22, 'Test twenty two','Answer twenty two',3,2);
+insert into public.questions(id, question, answer, difficulty, category)
+values(23, 'Test twenty three','Answer twenty three',3,2);
+insert into public.questions(id, question, answer, difficulty, category)
+values(24, 'Test twenty four','Answer twenty four',3,2);
+insert into public.questions(id, question, answer, difficulty, category)
+values(25, 'Test twenty five','Answer twenty five',3,2);
 
 
 --
