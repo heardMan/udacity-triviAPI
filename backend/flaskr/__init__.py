@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_migrate import Migrate
 import random
+import unittest
 
 from models import db, Question, Category
 
@@ -37,7 +38,7 @@ for all available categories.
 @app.route('/categories', methods=['GET'])
 def get_categories():
   categories = [category.type for category in Category.query.all()]
-  return jsonify({'categories': categories})
+  return jsonify({'categories': categories, 'success': True})
 
 '''
 @TODO: 
@@ -54,28 +55,42 @@ Clicking on the page numbers should update the questions.
 
 @app.route('/questions/page/<int:page>', methods=['GET'])
 def get_questions(page):
-  print(page)
+  
   questions = []
-  query = Question.query.all()
-  print(questions)
-  for question in query:
-    print(question)
-    _question_ = {
-      'key': question.id,
-      'question': question.question,
-      'answer': question.answer,
-      'category': question.category,
-      'difficulty': question.difficulty
-    }
-    questions.append(_question_)
-  categories = [category.type for category in Category.query.all()]
-  print(categories)
-  return jsonify({
-          'questions': questions,
-          'total_questions': len(questions),
-          'categories': categories,
-          'current_category': 'result.current_category'
-  })
+  try:
+    categories = [category.type for category in Category.query.all()]
+    if categories == None:
+      error_message = dumps({'Message': 'Cannot find Categories... Check your connection(s)?'})
+      abort(Response(error_message, 404))
+    
+    query = Question.query.paginate(page, per_page=10)
+    if query == None:
+      error_message = dumps({'Message': 'Cannot fin Questions... Check your connection(s)'})
+      abort(Response(error_message, 404))
+
+    results = query.items
+  
+    for question in results:
+      _question_ = {
+        'key': question.id,
+        'question': question.question,
+        'answer': question.answer,
+        'category': question.category,
+        'difficulty': question.difficulty
+      }
+      questions.append(_question_)
+    
+    return jsonify({
+            'success': True,
+            'questions': questions,
+            'total_questions': len(query.query.all()),
+            'categories': categories
+    })
+  except:
+    error_message = dumps({'Message': 'Your request for page {} has failed.'.format(page)})
+    abort(Response(error_message, 404))
+   
+
 '''
 @TODO: 
 Create an endpoint to DELETE question using a question ID. 
@@ -133,6 +148,7 @@ and shown whether they were correct or not.
 Create error handlers for all expected errors 
 including 404 and 422. 
 '''
+#@app.errorhandler(404)
   
 #----------------------------------------------------------------------------#
 # Launch.
