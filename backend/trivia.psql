@@ -236,9 +236,7 @@ values(22, 'Test twenty two','Answer twenty two',3,2);
 insert into public.questions(id, question, answer, difficulty, category)
 values(23, 'Test twenty three','Answer twenty three',3,2);
 insert into public.questions(id, question, answer, difficulty, category)
-values(24, 'Test twenty four','Answer twenty four',3,2);
-insert into public.questions(id, question, answer, difficulty, category)
-values(25, 'Test twenty five','Answer twenty five',3,2);
+
 
 
 --

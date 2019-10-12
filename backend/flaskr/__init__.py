@@ -1,5 +1,6 @@
 import os
-from flask import Flask, request, abort, jsonify
+import sys
+from flask import Flask, request, abort, flash, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_migrate import Migrate
@@ -55,7 +56,7 @@ Clicking on the page numbers should update the questions.
 
 @app.route('/questions/page/<int:page>', methods=['GET'])
 def get_questions(page):
-  
+  error=False
   questions = []
   try:
     categories = [category.type for category in Category.query.all()]
@@ -80,15 +81,22 @@ def get_questions(page):
       }
       questions.append(_question_)
     
-    return jsonify({
+    
+  except:
+    error=True
+    error_message = dumps({'Message': 'Your request for Questions Page {} has failed.'.format(page)})
+    
+  finally:
+    
+    if error:
+      abort(Response(error_message, 400))
+    else:
+      return jsonify({
             'success': True,
             'questions': questions,
             'total_questions': len(query.query.all()),
             'categories': categories
     })
-  except:
-    error_message = dumps({'Message': 'Your request for page {} has failed.'.format(page)})
-    abort(Response(error_message, 404))
    
 
 '''
@@ -98,6 +106,8 @@ Create an endpoint to DELETE question using a question ID.
 TEST: When you click the trash icon next to a question, the question will be removed.
 This removal will persist in the database and when you refresh the page. 
 '''
+
+
 
 '''
 @TODO: 
@@ -109,7 +119,49 @@ TEST: When you submit a question on the "Add" tab,
 the form will clear and the question will appear at the end of the last page
 of the questions list in the "List" tab.  
 '''
+@app.route('/questions', methods=['POST'])
+def add_question():
+  print('Request data: {}'.format(request.data))
+  print('{}'.format(request.json))
 
+  error=False
+
+  try:
+    new_question = Question(
+      question=request.json['question'],
+      answer=request.json['answer'],
+      category=request.json['category'],
+      difficulty=request.json['difficulty']
+    )
+    print(new_question)
+    db.session.add(new_question)
+    db.session.commit()
+    
+  except:
+    error=True
+    db.session.rollback()
+    print(sys.exc_info())
+  finally:
+    db.session.close()
+
+    if error:
+      abort(400)
+    else:
+      
+      return jsonify({
+        'success': True,
+        'question': request.json
+        
+      })
+
+
+    
+
+
+  
+
+  
+  
 '''
 @TODO: 
 Create a POST endpoint to get questions based on a search term. 
