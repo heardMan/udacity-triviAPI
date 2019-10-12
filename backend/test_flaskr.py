@@ -53,7 +53,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertGreater(len(data['categories']),0)
         self.assertGreater(len(data['questions']),0)
-        #self.assertGreater(data['total_questions'],0)
+        self.assertGreater(data['total_questions'],0)
     
     def test_delete_questions(self):
         """Test the delete questions route"""
@@ -63,10 +63,31 @@ class TriviaTestCase(unittest.TestCase):
 
     def test_post_question(self):
         """Test the post question route"""
+
+        get_before = self.client().get('/questions/page/1')
+        get_before_data = get_before.json
+        init_question_num = get_before_data['total_questions']
+        
+        post = self.client().post('/questions',json={
+            'question': 'test question one',
+            'answer': 'test answer one',
+            'category': 1,
+            'difficulty': 2
+        })
+        post_data = json.loads(post.data)
+
+        get_after = self.client().get('/questions/page/1')
+        get_after_data = get_after.json
+        final_question_num = get_after_data['total_questions']
+
+        self.assertEqual(post.status_code, 200)
+        self.assertEquals(post_data['success'], True)
+        self.assertGreater(final_question_num, init_question_num)
+
         #TEST: When you submit a question on the "Add" tab, 
         #the form will clear and the question will appear at the end of the last page
         #of the questions list in the "List" tab.
-        pass
+        
 
     def test_search_questions(self):
         """Test the search questions route"""
@@ -76,7 +97,7 @@ class TriviaTestCase(unittest.TestCase):
         pass
 
     def test_get_questions_by_category(self):
-        """Test the search questions route"""
+        """Test the get questions by category route"""
         #TEST: In the "List" tab / main screen, clicking on one of the 
         #categories in the left column will cause only questions of that 
         #category to be shown. 
