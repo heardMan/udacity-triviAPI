@@ -101,13 +101,14 @@ class QuestionView extends Component {
     })
   }
 
-  questionAction = (id) => (action) => {
+  questionAction = (id) => (action, key) => {
     if(action === 'DELETE') {
       if(window.confirm('are you sure you want to delete the question?')) {
         $.ajax({
-          url: `/questions/${id}`, //TODO: update request URL
+          url: `/question/${key}`, //TODO: update request URL
           type: "DELETE",
           success: (result) => {
+            console.log(result)
             this.getQuestions();
           },
           error: (error) => {
@@ -137,8 +138,10 @@ class QuestionView extends Component {
         <div className="questions-list">
           <h2>Questions</h2>
           {this.state.questions.map((q, ind) => (
+          
             <Question
               key={ind}
+              id={q.id}
               question={q.question}
               answer={q.answer}
               category={this.state.categories[q.category]} 
@@ -146,6 +149,7 @@ class QuestionView extends Component {
               questionAction={this.questionAction(q.id)}
             />
           ))}
+          
           <div className="pagination-menu">
             {this.createPagination()}
           </div>

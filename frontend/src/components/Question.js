@@ -14,14 +14,14 @@ class Question extends Component {
   }
 
   render() {
-    const { question, answer, category, difficulty } = this.props;
+    const { id, question, answer, category, difficulty } = this.props;
     return (
       <div className="Question-holder">
         <div className="Question">{question}</div>
         <div className="Question-status">
           <img alt="" className="category" src={`${category}.svg`}/>
           <div className="difficulty">Difficulty: {difficulty}</div>
-          <img alt="" src="delete.png" className="delete" onClick={() => this.props.questionAction('DELETE')}/>
+          <img alt="" src="delete.png" className="delete" onClick={() => this.props.questionAction('DELETE', id)}/>
           
         </div>
         <div className="show-answer button"

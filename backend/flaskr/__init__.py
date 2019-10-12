@@ -1,6 +1,6 @@
 import os
 import sys
-from flask import Flask, request, abort, flash, jsonify
+from flask import Flask, request, abort, flash, jsonify, Response
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_migrate import Migrate
@@ -61,19 +61,17 @@ def get_questions(page):
   try:
     categories = [category.type for category in Category.query.all()]
     if categories == None:
-      error_message = dumps({'Message': 'Cannot find Categories... Check your connection(s)?'})
-      abort(Response(error_message, 404))
+      abort(404)
     
     query = Question.query.paginate(page, per_page=10)
     if query == None:
-      error_message = dumps({'Message': 'Cannot fin Questions... Check your connection(s)'})
-      abort(Response(error_message, 404))
+      abort(404)
 
     results = query.items
   
     for question in results:
       _question_ = {
-        'key': question.id,
+        'id': question.id,
         'question': question.question,
         'answer': question.answer,
         'category': question.category,
@@ -84,12 +82,11 @@ def get_questions(page):
     
   except:
     error=True
-    error_message = dumps({'Message': 'Your request for Questions Page {} has failed.'.format(page)})
-    
+    print(sys.exc_info())
   finally:
     
     if error:
-      abort(Response(error_message, 400))
+      abort(400)
     else:
       return jsonify({
             'success': True,
@@ -106,6 +103,45 @@ Create an endpoint to DELETE question using a question ID.
 TEST: When you click the trash icon next to a question, the question will be removed.
 This removal will persist in the database and when you refresh the page. 
 '''
+@app.route('/question/<int:question_id>', methods=['DELETE', 'GET'])
+def delete_question(question_id):
+
+  print(question_id)
+
+  error=False
+
+  if request.method == 'DELETE':
+    try:
+      #something
+      question = Question.query.get(question_id)
+      db.session.delete(question)
+      db.session.commit()
+    except:
+      error=True
+      print(sys.exc_info())
+    finally:
+      db.session.close()
+      #something
+      if error:
+        
+        abort(400)
+        
+      else:
+        return jsonify({
+          'success': True,
+          'method': 'Delete',
+          'question': question_id
+        })
+
+    
+
+  if request.method == 'GET':
+    return jsonify({
+      'success': True,
+      'method': 'Get',
+      'implemented': False
+    })
+
 
 
 
@@ -121,8 +157,6 @@ of the questions list in the "List" tab.
 '''
 @app.route('/questions', methods=['POST'])
 def add_question():
-  print('Request data: {}'.format(request.data))
-  print('{}'.format(request.json))
 
   error=False
 
@@ -133,14 +167,14 @@ def add_question():
       category=request.json['category'],
       difficulty=request.json['difficulty']
     )
-    print(new_question)
+    print('Added: {}'.format(new_question))
     db.session.add(new_question)
     db.session.commit()
     
   except:
     error=True
     db.session.rollback()
-    print(sys.exc_info())
+    print('Error: {}'.format(sys.exc_info()))
   finally:
     db.session.close()
 
