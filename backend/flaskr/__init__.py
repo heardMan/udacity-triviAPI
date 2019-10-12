@@ -142,9 +142,6 @@ def delete_question(question_id):
       'implemented': False
     })
 
-
-
-
 '''
 @TODO: 
 Create an endpoint to POST a new question, 
@@ -187,14 +184,6 @@ def add_question():
         'question': request.json
         
       })
-
-
-    
-
-
-  
-
-  
   
 '''
 @TODO: 
@@ -207,6 +196,34 @@ only question that include that string within their question.
 Try using the word "title" to start. 
 '''
 
+@app.route('/questions/search', methods=['POST'])
+def search_questions():
+  search_term = request.json['searchTerm']
+  print(search_term)
+  query_results = Question.query.filter(Question.question.ilike('%{}%'.format(search_term))).all()
+  questions = []
+  categories = [category.type for category in Category.query.all()]
+  for question in query_results:
+    _question_ = {
+      'id':question.id,
+      'question': question.question,
+      'answer': question.answer,
+      'category': question.category,
+      'difficulty': question.difficulty
+    }
+    questions.append(_question_)
+
+  print(questions)
+
+  return jsonify({
+        'success': True,
+        'questions': questions,
+        'total_questions': len(questions),
+        'current_category': ''
+        
+      })
+
+
 '''
 @TODO: 
 Create a GET endpoint to get questions based on category. 
@@ -215,7 +232,29 @@ TEST: In the "List" tab / main screen, clicking on one of the
 categories in the left column will cause only questions of that 
 category to be shown. 
 '''
-
+@app.route('/category/<int:category_id>/questions', methods=['GET'])
+def get_questions_by_category(category_id):
+  print(category_id)
+  query = Question.query.filter_by(category=category_id).all()
+  questions = []
+  for question in query:
+    _question_={
+      'id': question.id,
+      'question': question.question,
+      'answer':question.answer,
+      'category': question.category,
+      'difficulty': question.difficulty
+    }
+    questions.append(_question_)
+  print(query)
+  
+  return jsonify({
+          'success': True,
+          'questions': questions,
+          'total_questions': len(questions),
+          'current_category': ''
+        
+        })
 
 '''
 @TODO: 
@@ -229,6 +268,43 @@ one question at a time is displayed, the user is allowed to answer
 and shown whether they were correct or not. 
 '''
 
+@app.route('/questions/quiz', methods=['POST'])
+def quizzes():
+  data = request.json
+  if data['quiz_category']['id'] == 0:
+    query = Question.query.all()
+  else:
+    query = Question.query.filter_by(category=int(data['quiz_category']['id'])+1).all()
+
+
+  previous_questions=data['previous_questions']
+  index = random.randint(0,len(query)-1)
+  potential_question = query[index]
+  selected = False
+  while selected == False:
+    if potential_question.id in previous_questions:
+      index +=1
+      potential_question = query[index]
+      print(potential_question)
+    else:
+      selected = True
+  
+  _question_ = potential_question
+
+  next_question = {
+    'id': _question_.id,
+    'question':_question_.question,
+    'answer':_question_.answer,
+    'category':_question_.category,
+    'difficulty':_question_.difficulty
+  }
+
+  print(data)
+  return jsonify({
+          'success': True,
+          'question': next_question
+        
+        })
 '''
 @TODO: 
 Create error handlers for all expected errors 

@@ -81,8 +81,7 @@ class TriviaTestCase(unittest.TestCase):
 
     def test_delete_questions(self):
         """Test the delete questions route"""
-        #TEST: When you click the trash icon next to a question, the question will be removed.
-        #This removal will persist in the database and when you refresh the page.
+        
         get_before = self.client().get('/questions/page/1')
         get_before_data = get_before.json
         init_question_num = get_before_data['total_questions']
@@ -110,24 +109,75 @@ class TriviaTestCase(unittest.TestCase):
 
     def test_search_questions(self):
         """Test the search questions route"""
-        #TEST: Search by any phrase. The questions list will update to include 
-        #only question that include that string within their question. 
-        #Try using the word "title" to start.
-        pass
+
+        get_before = self.client().get('/questions/page/1')
+        get_before_data = get_before.json
+        init_question_num = len(get_before_data['questions'])
+        
+        post = self.client().post('/questions/search',json={
+            'searchTerm': 'title',
+        })
+        post_data = json.loads(post.data)
+
+        final_question_num = len(post_data['questions'])
+
+        self.assertEqual(post.status_code, 200)
+        self.assertEqual(post_data['success'], True)
+        self.assertGreater(init_question_num, final_question_num)
 
     def test_get_questions_by_category(self):
         """Test the get questions by category route"""
-        #TEST: In the "List" tab / main screen, clicking on one of the 
-        #categories in the left column will cause only questions of that 
-        #category to be shown. 
-        pass
+
+        get_before = self.client().get('/questions/page/1')
+        get_before_data = get_before.json
+        init_question_num = len(get_before_data['questions'])
+
+        post = self.client().post('/questions/search',json={
+            'searchTerm': 'title',
+        })
+        post_data = json.loads(post.data)
+
+        final_question_num = len(post_data['questions'])
+
+        self.assertEqual(post.status_code, 200)
+        self.assertEqual(post_data['success'], True)
+        self.assertGreater(init_question_num, final_question_num)
 
     def test_quiz(self):
         """Test the quiz init route"""
         #TEST: In the "Play" tab, after a user selects "All" or a category,
         #one question at a time is displayed, the user is allowed to answer
         #and shown whether they were correct or not. 
-        pass
+        first_question_get_res = self.client().post('/questions/quiz',json={
+            'previous_questions': [],
+            'quiz_category': {
+                'type':'click',
+                'id':0
+            }
+        })
+
+        first_question_data= json.loads(first_question_get_res.data)
+        self.assertEqual(first_question_get_res.status_code, 200)
+        self.assertEqual(first_question_data['success'], True)
+        first_question = first_question_data['question']
+        first_answer = first_question['answer']
+
+
+        second_question_get_res = self.client().post('/questions/quiz',json={
+            'previous_questions': [5,11],
+            'quiz_category': {
+                'type':'Sports',
+                'id':0
+            }
+        })
+        second_question_data = json.loads(second_question_get_res.data)
+        self.assertEqual(second_question_get_res.status_code, 200)
+        self.assertEqual(second_question_data['success'], True)
+        second_question = second_question_data['question']
+        second_answer = second_question['answer']
+            
+        self.assertNotEqual(first_question, second_question)
+        self.assertNotEqual(first_answer, second_answer)
 
 
 # Make the tests conveniently executable
