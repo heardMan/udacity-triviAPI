@@ -59,6 +59,23 @@ class TriviaTestCase(unittest.TestCase):
         """Test the delete questions route"""
         #TEST: When you click the trash icon next to a question, the question will be removed.
         #This removal will persist in the database and when you refresh the page.
+        get_before = self.client().get('/questions/page/1')
+        get_before_data = get_before.json
+        init_question_num = get_before_data['total_questions']
+
+        delete = self.client.delete('question/{}'.format(question_id))
+        delete_data = json.loads(delete.data)
+
+
+        get_after = self.client().get('/questions/page/1')
+        get_after_data = get_after.json
+        final_question_num = get_after_data['total_questions']
+
+        self.assertEqual(delete.status_code, 200)
+        self.assertEquals(delete_data['success'], True)
+
+        self.assertGreater(init_question_num, final_question_num)
+
         pass
 
     def test_post_question(self):
@@ -83,11 +100,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(post.status_code, 200)
         self.assertEquals(post_data['success'], True)
         self.assertGreater(final_question_num, init_question_num)
-
-        #TEST: When you submit a question on the "Add" tab, 
-        #the form will clear and the question will appear at the end of the last page
-        #of the questions list in the "List" tab.
-        
 
     def test_search_questions(self):
         """Test the search questions route"""
