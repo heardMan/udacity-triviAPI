@@ -43,9 +43,13 @@ pip install -r requirements.txt
 
 ### Backend Server Set Up
 
+If you do not already have it please download and install python3 with pip3 <a href="https://www.python.org/downloads/">here</a> prior to setting up this application.
+
 Now that you have the application on your local machine it is time to start configuring the backend server.
 
-In order for all the application logic to work smoothly there needs to be quite a few seed questions in the database already. Enter the following commands into your command line or terminal application.
+In order for all the application logic to work smoothly there needs to be quite a few seed questions in the database already. From the root directory of the project enter the following commands into your command line or terminal application.
+
+##### Set Up the PostgreSQL Database
 
 '''
 cd backend
@@ -54,7 +58,7 @@ createdb triva
 psql trivia < trivia.psql
 '''
 
-set up flask app
+##### Set Up the Flask App
 
 from the directory titled backend enter the following commands into your command line or terminal application
 
@@ -67,6 +71,8 @@ export FLASK_DEBUG=true
 For running tests it is generally reccomended that you use a fresh database instance.
 To make this process easier feel free to enter the following into your command to perform testing.
 
+##### Set Up the test PostgreSQL Database
+
 ```
 dropdb trivia_test
 createdb trivia_test
@@ -76,9 +82,13 @@ python test_flaskr.py
 
 ### Frontend Server Set Up
 
+If you do not already have it please download and install nodeJS <a href="https://nodejs.org/en/download/">here</a> prior to setting up this application.
+
 As a react application setting up the server for Trivia API is very easy.
 
 From your root directory simply enter the following commands on your command line:
+
+##### Download and Install Node Dependencies
 
 ```
 cd frontend
