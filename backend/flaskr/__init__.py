@@ -41,6 +41,7 @@ def get_categories():
 def get_questions(page):
     error = False
     questions = []
+    total_questions = 0
     # if question id is not an integer
     if type(page) is not int:
         # let them know their input is not processable
@@ -55,9 +56,14 @@ def get_questions(page):
                 abort(404)
 
             query = Question.query.paginate(page, per_page=10)
+            total_questions += len(Question.query.all())
             if query is None:
                 # let the user know that no resource was found
                 abort(404)
+            
+            if len(query.items) == 0:
+                # let the user know that no resource was found
+                error = True
 
             results = query.items
             # format data
@@ -70,7 +76,7 @@ def get_questions(page):
                     'difficulty': question.difficulty
                 }
                 questions.append(_question_)
-        except RuntimeError:
+        except Exception:
             # set error to true and log on the server
             error = True
             print('Error: {}'.format(sys.exc_info()))
@@ -84,7 +90,7 @@ def get_questions(page):
                 return jsonify({
                     'success': True,
                     'questions': questions,
-                    'total_questions': len(query.query.all()),
+                    'total_questions': total_questions,
                     'categories': categories
                 })
     else:
@@ -112,7 +118,7 @@ def delete_question(question_id):
             db.session.delete(question)
             # commit deletion to the database
             db.session.commit()
-        except RuntimeError:
+        except Exception:
             # set error to true and log on the server
             error = True
             print('Error: {}'.format(sys.exc_info()))
@@ -157,7 +163,7 @@ def add_question():
             # commit data to database
             db.session.commit()
 
-        except RuntimeError:
+        except Exception:
             # set error to true and log on the server
             error = True
             db.session.rollback()
@@ -216,7 +222,7 @@ def search_questions():
                 }
                 questions.append(_question_)
 
-        except RuntimeError:
+        except Exception:
             # set error to true and log on the server
             error = True
             print('Error: {}'.format(sys.exc_info()))
@@ -264,7 +270,7 @@ def get_questions_by_category(category_id):
                     'difficulty': question.difficulty
                 }
                 questions.append(_question_)
-        except RuntimeError:
+        except Exception:
             # set error to true and log on the server
             error = True
             print('Error: {}'.format(sys.exc_info()))
@@ -323,7 +329,7 @@ def quizzes():
                 'category': _question_.category,
                 'difficulty': _question_.difficulty
             }
-        except RuntimeError:
+        except Exception:
             # set error and log error on the server
             error = True
             print('Error: {}'.format(sys.exc_info()))
@@ -349,7 +355,7 @@ def bad_request(error):
     return jsonify({
         "success": False,
         "error": 400,
-        "message": BAD_REQUEST_MESSAGE
+        "message": "Bad Request"
     }), 400
 
 # handle resource not found errors
@@ -358,7 +364,7 @@ def resource_not_found(error):
     return jsonify({
         "success": False,
         "error": 404,
-        "message": "Resource Not Found -- no such resource is accessible"
+        "message": "Resource Not Found"
     }), 404
 
 # handle resource not found errors
@@ -376,7 +382,7 @@ def unprocessable_entity(error):
     return jsonify({
         "success": False,
         "error": 422,
-        "message": "Unprocessable Entity -- try submitting a different value"
+        "message": "Unprocessable Entity"
     }), 422
 
 # handle internal server errors
@@ -385,7 +391,7 @@ def internal_server_error(error):
     return jsonify({
         "success": False,
         "error": 500,
-        "message": "Internal Server Error -- oops, our bad"
+        "message": "Internal Server Error"
     }), 500
 
 
