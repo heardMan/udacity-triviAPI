@@ -315,8 +315,10 @@ def quizzes():
             selected = False
             while selected is False:
                 if potential_question.id in previous_questions:
-                    index += 1
+                    # reassign index if already used
+                    index = random.randint(0, len(query)-1)
                     potential_question = query[index]
+                    
                 else:
                     selected = True
             # set question
