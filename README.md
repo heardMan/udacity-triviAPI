@@ -1,6 +1,6 @@
 # udacity-triviAPI
 
-## introduction
+## Introduction
 
 Welcome to trivia API!
 
@@ -16,7 +16,7 @@ The back end portion of this applicattion is written with Python3, flask, and a 
 
 The follow sectionsgive details on how to set up and start a development server for the project.
 
-## initial set up and configuration
+## Initial Set Up and Configuration
 
 The first step to starting development on Trivia API will require one to clone the initial files.
 
@@ -41,7 +41,7 @@ source your_environment_name/bin/activate
 pip install -r requirements.txt
 ```
 
-### backend server set up
+### Backend Server Set Up
 
 Now that you have the application on your local machine it is time to start configuring the backend server.
 
@@ -74,7 +74,7 @@ psql trivia_test < trivia.psql
 python test_flaskr.py
 ```
 
-### frontend server set up
+### Frontend Server Set Up
 
 As a react application setting up the server for Trivia API is very easy.
 
@@ -93,21 +93,25 @@ Trivia API should be up and running!
 
 ### GET categories
 
-relative route: <strong>/categories</strong>
+##### Relative Route:
+<strong>/categories</strong>
 
-route method: GET
+##### Route Method: 
+<strong>GET</strong> 
 
-parameters: none
+##### Parameters: 
+None
 
-sample request object: none
+##### Sample Request Object: 
+None
 
-sample curl request:
+##### Sample cURL Request:
 
 ```
 curl http://localhost:3000/categories
 ```
 
-sample success response:
+##### Sample Success Response:
 
 ```
 {
@@ -125,21 +129,25 @@ sample success response:
 
 ### GET paginated questions
 
-relative route: <strong>/questions/page/{page_number}</strong>
+##### Relative Route:
+<strong>/questions/page/{page_number}</strong>
 
-route method: GET
+##### Route Method: 
+<strong>GET</strong> 
 
-parameters: page_number
+##### Parameters: 
+<strong>page_number</strong> 
 
-sample request object: none
+##### Sample Request Object: 
+None
 
-sample curl request:
+##### Sample cURL Request:
 
 ```
 curl http://localhost:3000/questions/page/1
 ```
 
-sample success response:
+##### Sample Success Response:
 
 ```
 {
@@ -181,21 +189,25 @@ sample success response:
 
 ### GET questions by category
 
-relative route: <strong>/category/{caetgory_id}/questions</strong>
+##### Relative Route:
+<strong>/category/{caetgory_id}/questions</strong>
 
-route method: GET
+##### Route Method: 
+<strong>GET</strong> 
 
-parameters: caetgory_id
+##### Parameters: 
+<strong>caetgory_id</strong> 
 
-sample request object: none
+##### Sample Request Object: 
+None
 
-sample curl request:
+##### Sample cURL Request:
 
 ```
 curl http://localhost:3000/category/1/questions
 ```
 
-sample success response:
+##### Sample Success Response:
 
 NOTE: this is not a complete response object
 we have ommited several results to make this block of code more readable
@@ -234,13 +246,16 @@ this is why it state 7 results even though there are only 3 shown
 
 ### POST search term for a question
 
-relative route: <strong>/questions/search</strong>
+##### Relative Route:
+<strong>/questions/search</strong>
 
-route method: POST
+##### Route Method: 
+<strong>POST</strong> 
 
-parameters: none
+##### Parameters: 
+None
 
-sample request object:
+##### Sample Request Object: 
 
 ```
 {
@@ -248,13 +263,13 @@ sample request object:
 }
 ```
 
-sample curl request:
+##### Sample cURL Request:
 
 ```
 curl -d '{"searchTerm":"title"}' -H "Content-Type: application/json" http://localhost:3000/questions
 ```
 
-sample success response:
+##### Sample Success Response:
 
 ```
 {
@@ -282,13 +297,16 @@ sample success response:
 
 ### POST a question
 
-relative route: <strong>/questions</strong>
+##### Relative Route:
+<strong>/questions</strong>
 
-route method: POST
+##### Route Method: 
+<strong>POST</strong> 
 
-parameters: none
+##### Parameters: 
+None
 
-sample request object:
+##### Sample Request Object: 
 
 ```
 {
@@ -299,13 +317,13 @@ sample request object:
 }
 ```
 
-sample curl request:
+##### Sample cURL Request:
 
 ```
 curl -d '{"question":"sample_question_text","answer":"sample_answer_text","difficulty":1, "category":1}' -H "Content-Type: application/json" http://localhost:3000/questions
 ```
 
-sample success response:
+##### Sample Success Response:
 
 ```
 {
@@ -321,21 +339,25 @@ sample success response:
 
 ### DELETE a question
 
-relative route: <strong>/question/{question_id}</strong> 
+##### Relative Route:
+<strong>/question/{question_id}</strong> 
 
-route method: DELETE
+##### Route Method: 
+<strong>DELETE</strong> 
 
-parameters: question_id
+##### Parameters: 
+<strong>question_id</strong> 
 
-sample request object: none
+##### Sample Request Object: 
+None
 
-sample curl request:
+##### Sample cURL Request:
 
 ```
 curl -X DELETE http://localhost:3000/question/29
 ```
 
-sample success response:
+##### Sample Success Response:
 
 ```
 {
@@ -347,13 +369,16 @@ sample success response:
 
 ### POST a quiz answer
 
-relative route: <strong>/questions/quiz</strong>
+##### Relative Route:
+<strong>/questions/quiz</strong>
 
-route method: POST
+##### Route Method: 
+<strong>POST</strong> 
 
-parameters: none
+##### Parameters: 
+None
 
-sample request object:
+##### Sample Request Object: 
 
 ```
 {
@@ -365,13 +390,13 @@ sample request object:
 }
 ```
 
-sample curl request:
+##### Sample cURL Request:
 
 ```
 curl -d '{"previous_questions":[5,11], "quiz_category":{"type":"Science", "id":0}}' -H "Content-Type: application/json" http://localhost:3000/questions/quiz
 ```
 
-sample success response:
+##### Sample Success Response:
 
 ```
 {
@@ -390,7 +415,7 @@ sample success response:
 
 description: if the request is not formatted properly the following error will be sent
 
-sample response object:
+##### Sample Response Object:
 
 ```
 {
@@ -404,7 +429,7 @@ sample response object:
 
 description: if the requested resouces is not available the following error will be sent
 
-sample response object:
+##### Sample Response Object:
 
 ```
 {
@@ -418,7 +443,7 @@ sample response object:
 
 description: if the request attempts to use an unapproved method the following error will be sent
 
-sample response object:
+##### Sample Response Object:
 
 ```
 {
@@ -432,7 +457,7 @@ sample response object:
 
 description: if the request is not of the appropriate data type the following error will be sent
 
-sample response object:
+##### Sample Response Object:
 
 ```
 {
@@ -446,7 +471,7 @@ sample response object:
 
 description: if the application has an internal error not related to user input the following error will be sent
 
-sample response object:
+##### Sample Response Object:
 
 ```
 {
