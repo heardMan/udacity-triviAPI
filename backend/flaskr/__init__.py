@@ -70,7 +70,7 @@ def get_questions(page):
                     'difficulty': question.difficulty
                 }
                 questions.append(_question_)
-        except RequestError:
+        except RuntimeError:
             # set error to true and log on the server
             error = True
             print('Error: {}'.format(sys.exc_info()))
@@ -112,7 +112,7 @@ def delete_question(question_id):
             db.session.delete(question)
             # commit deletion to the database
             db.session.commit()
-        except RequestError:
+        except RuntimeError:
             # set error to true and log on the server
             error = True
             print('Error: {}'.format(sys.exc_info()))
@@ -157,7 +157,7 @@ def add_question():
             # commit data to database
             db.session.commit()
 
-        except RequestError:
+        except RuntimeError:
             # set error to true and log on the server
             error = True
             db.session.rollback()
@@ -216,7 +216,7 @@ def search_questions():
                 }
                 questions.append(_question_)
 
-        except RequestError:
+        except RuntimeError:
             # set error to true and log on the server
             error = True
             print('Error: {}'.format(sys.exc_info()))
@@ -264,7 +264,7 @@ def get_questions_by_category(category_id):
                     'difficulty': question.difficulty
                 }
                 questions.append(_question_)
-        except RequestError:
+        except RuntimeError:
             # set error to true and log on the server
             error = True
             print('Error: {}'.format(sys.exc_info()))
@@ -323,7 +323,7 @@ def quizzes():
                 'category': _question_.category,
                 'difficulty': _question_.difficulty
             }
-        except RequestError:
+        except RuntimeError:
             # set error and log error on the server
             error = True
             print('Error: {}'.format(sys.exc_info()))
@@ -349,12 +349,12 @@ def bad_request(error):
     return jsonify({
         "success": False,
         "error": 400,
-        "message": "Bad Request -- check your formatting "
+        "message": BAD_REQUEST_MESSAGE
     }), 400
 
 # handle resource not found errors
 @app.errorhandler(404)
-def bad_request(error):
+def resource_not_found(error):
     return jsonify({
         "success": False,
         "error": 404,
@@ -363,7 +363,7 @@ def bad_request(error):
 
 # handle resource not found errors
 @app.errorhandler(405)
-def bad_request(error):
+def method_not_allowed(error):
     return jsonify({
         "success": False,
         "error": 405,
@@ -372,7 +372,7 @@ def bad_request(error):
 
 # handle unprocessable entity errors
 @app.errorhandler(422)
-def bad_request(error):
+def unprocessable_entity(error):
     return jsonify({
         "success": False,
         "error": 422,
@@ -381,7 +381,7 @@ def bad_request(error):
 
 # handle internal server errors
 @app.errorhandler(500)
-def bad_request(error):
+def internal_server_error(error):
     return jsonify({
         "success": False,
         "error": 500,
