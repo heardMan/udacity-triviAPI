@@ -19,6 +19,7 @@ from the directory titled backend enter the following commands into your command
 export FLASK_APP=flaskr
 export FLASK_ENV-development
 export FLASK_DEBUG=true
+flask run --reload
 ```
 
 For running tests it is generally reccomended that you use a fresh database instance.
