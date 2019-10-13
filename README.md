@@ -82,6 +82,7 @@ From your root directory simply enter the following commands on your command lin
 
 ```
 cd frontend
+npm i
 npm start
 ```
 
