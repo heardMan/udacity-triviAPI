@@ -144,7 +144,7 @@ def add_question():
   error=False
 
   #ensure proper request method
-  if request.method == 'GET':
+  if request.method == 'POST':
     try:
       #format data for database
       new_question = Question(
