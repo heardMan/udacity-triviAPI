@@ -70,7 +70,7 @@ To make this process easier feel free to enter the following into your command t
 ```
 dropdb trivia_test
 createdb trivia_test
-psql trivia_test < trivia_test.psql
+psql trivia_test < trivia.psql
 python test_flaskr.py
 ```
 
@@ -93,7 +93,7 @@ Trivia API should be up and running!
 
 ### GET categories
 
-relative route: '/categories'
+relative route: <strong>/categories</strong>
 
 route method: GET
 
@@ -103,13 +103,13 @@ sample request object: none
 
 sample curl request:
 
-'''
+```
 curl http://localhost:3000/categories
-'''
+```
 
 sample success response:
 
-'''
+```
 {
     "categories":[
         "Science",
@@ -121,11 +121,11 @@ sample success response:
     ],
     "success": true
 }
-'''
+```
 
 ### GET paginated questions
 
-relative route: '/questions/page/{page_number}'
+relative route: <strong>/questions/page/{page_number}</strong>
 
 route method: GET
 
@@ -135,13 +135,13 @@ sample request object: none
 
 sample curl request:
 
-'''
+```
 curl http://localhost:3000/questions/page/1
-'''
+```
 
 sample success response:
 
-'''
+```
 {
   "categories": [
     "Science", 
@@ -177,11 +177,11 @@ sample success response:
   "success": true, 
   "total_questions": 23
 }
-'''
+```
 
 ### GET questions by category
 
-relative route: 'category/{caetgory_id}/questions'
+relative route: <strong>/category/{caetgory_id}/questions</strong>
 
 route method: GET
 
@@ -191,9 +191,9 @@ sample request object: none
 
 sample curl request:
 
-'''
+```
 curl http://localhost:3000/category/1/questions
-'''
+```
 
 sample success response:
 
@@ -201,7 +201,7 @@ NOTE: this is not a complete response object
 we have ommited several results to make this block of code more readable
 this is why it state 7 results even though there are only 3 shown
 
-'''
+```
 {
   "current_category": "", 
   "questions": [
@@ -230,12 +230,11 @@ this is why it state 7 results even though there are only 3 shown
   "success": true, 
   "total_questions": 7
 }
-
-'''
+```
 
 ### POST search term for a question
 
-relative route: '/questions/search'
+relative route: <strong>/questions/search</strong>
 
 route method: POST
 
@@ -243,21 +242,21 @@ parameters: none
 
 sample request object:
 
-'''
+```
 {
     "searchTerm": "some_search_term"
 }
-'''
+```
 
 sample curl request:
 
-'''
+```
 curl -d '{"searchTerm":"title"}' -H "Content-Type: application/json" http://localhost:3000/questions
-'''
+```
 
 sample success response:
 
-'''
+```
 {
   "current_category": "", 
   "questions": [
@@ -279,11 +278,11 @@ sample success response:
   "success": true, 
   "total_questions": 2
 }
-'''
+```
 
 ### POST a question
 
-relative route: '/questions'
+relative route: <strong>/questions</strong>
 
 route method: POST
 
@@ -291,24 +290,24 @@ parameters: none
 
 sample request object:
 
-'''
+```
 {
     "question": "sample_question_text",
     "answer": "sample_answer_text",
     "category": 1,
     "difficulty": 1
 }
-'''
+```
 
 sample curl request:
 
-'''
+```
 curl -d '{"question":"sample_question_text","answer":"sample_answer_text","difficulty":1, "category":1}' -H "Content-Type: application/json" http://localhost:3000/questions
-'''
+```
 
 sample success response:
 
-'''
+```
 {
   "question": {
     "answer": "sample_answer_text", 
@@ -318,11 +317,11 @@ sample success response:
   }, 
   "success": true
 }
-'''
+```
 
 ### DELETE a question
 
-relative route: '/question/{question_id}'
+relative route: <strong>/question/{question_id}</strong> 
 
 route method: DELETE
 
@@ -332,23 +331,23 @@ sample request object: none
 
 sample curl request:
 
-'''
+```
 curl -X DELETE http://localhost:3000/question/29
-'''
+```
 
 sample success response:
 
-'''
+```
 {
   "method": "Delete", 
   "question": 29, 
   "success": true
 }
-'''
+```
 
 ### POST a quiz answer
 
-relative route: '/questions/quiz'
+relative route: <strong>/questions/quiz</strong>
 
 route method: POST
 
@@ -356,7 +355,7 @@ parameters: none
 
 sample request object:
 
-'''
+```
 {
     "previous_questions": [1,2],
     "quiz_category": {
@@ -364,17 +363,17 @@ sample request object:
         "id":0
     }
 }
-'''
+```
 
 sample curl request:
 
-'''
+```
 curl -d '{"previous_questions":[5,11], "quiz_category":{"type":"Science", "id":0}}' -H "Content-Type: application/json" http://localhost:3000/questions/quiz
-'''
+```
 
 sample success response:
 
-'''
+```
 {
   "question": {
     "answer": "Blood", 
@@ -385,7 +384,7 @@ sample success response:
   }, 
   "success": true
 }
-'''
+```
 
 ### Sample 400 Error
 
@@ -393,13 +392,13 @@ description: if the request is not formatted properly the following error will b
 
 sample response object:
 
-'''
+```
 {
      "success": False, 
      "error": 400,
      "message": "Bad Request -- check your formatting "
   },400
-'''
+```
 
 ### Sample 404 Error
 
@@ -407,13 +406,13 @@ description: if the requested resouces is not available the following error will
 
 sample response object:
 
-'''
+```
 {
      "success": False, 
      "error": 404,
      "message": "Resource Not Found -- no such resource is accessible on the server"
   },404
-'''
+```
 
 ### Sample 405 Error
 
@@ -421,13 +420,13 @@ description: if the request attempts to use an unapproved method the following e
 
 sample response object:
 
-'''
+```
 {
      "success": False, 
      "error": 405,
      "message": "Method Not Allowed -- the endpoint you accesssed does not allow such a method"
   },405
-'''
+```
 
 ### Sample 422 Error
 
@@ -435,13 +434,13 @@ description: if the request is not of the appropriate data type the following er
 
 sample response object:
 
-'''
+```
 {
      "success": False, 
      "error": 422,
      "message": "Unprocessable Entity -- try submitting a different value"
   },422
-'''
+```
 
 ### Sample 500 Error
 
@@ -449,13 +448,13 @@ description: if the application has an internal error not related to user input 
 
 sample response object:
 
-'''
+```
 {
      "success": False, 
      "error": 500,
      "message": "Internal Server Error -- oops, our bad"
   },500
-'''
+```
 
 ## conclusion
 
