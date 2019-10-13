@@ -60,7 +60,6 @@ def get_questions(page):
             if query is None:
                 # let the user know that no resource was found
                 abort(404)
-            
             if len(query.items) == 0:
                 # let the user know that no resource was found
                 error = True
@@ -318,7 +317,6 @@ def quizzes():
                     # reassign index if already used
                     index = random.randint(0, len(query)-1)
                     potential_question = query[index]
-                    
                 else:
                     selected = True
             # set question
